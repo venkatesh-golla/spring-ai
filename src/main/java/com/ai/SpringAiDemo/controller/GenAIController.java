@@ -2,6 +2,7 @@ package com.ai.SpringAiDemo.controller;
 
 import com.ai.SpringAiDemo.service.ChatService;
 import com.ai.SpringAiDemo.service.ImageService;
+import com.ai.SpringAiDemo.service.RecipeService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.ai.image.ImageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,13 @@ import java.util.List;
 public class GenAIController {
     private final ChatService chatService;
     private final ImageService imageService;
+    private final RecipeService recipeService;
 
     @Autowired
-    public GenAIController(ChatService chatService, ImageService imageService) {
+    public GenAIController(ChatService chatService, ImageService imageService, RecipeService recipeService) {
         this.chatService = chatService;
         this.imageService = imageService;
+        this.recipeService = recipeService;
     }
 
     @GetMapping("/chat")
@@ -49,5 +52,12 @@ public class GenAIController {
             @RequestParam(defaultValue = "1") int n) {
         ImageResponse imageResponse = imageService.generateImageOptions(prompt, quality, height, width, n);
         return imageResponse.getResults().stream().map(result -> result.getOutput().getUrl()).toList();
+    }
+
+    @GetMapping("recipe-creator")
+    public String recipeCreator(@RequestParam String ingredients,
+                                @RequestParam(defaultValue = "any") String cuisine,
+                                @RequestParam(defaultValue = "") String dietaryRestriction) {
+        return recipeService.createRecipe(ingredients, cuisine, dietaryRestriction);
     }
 }
