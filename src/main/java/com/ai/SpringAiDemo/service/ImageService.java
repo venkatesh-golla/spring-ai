@@ -9,28 +9,29 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ImageService {
-//    Grok does not support Image generation, we would need to use OpenAI's API key in application.properties for this functionality
+    //    Grok does not support Image generation, we would need to use OpenAI's API key in application.properties for this functionality
     private final OpenAiImageModel imageModel;
+
     @Autowired
     public ImageService(OpenAiImageModel imageModel) {
         this.imageModel = imageModel;
     }
 
-    public ImageResponse generateImage(String prompt){
+    public ImageResponse generateImage(String prompt) {
         return imageModel.call(
                 new ImagePrompt(prompt)
         );
     }
 
-    public ImageResponse generateImageOptions(String prompt, String quality, int height, int width, int n){
+    public ImageResponse generateImageOptions(String prompt, String quality, int height, int width, int n) {
         return imageModel.call(
                 new ImagePrompt(prompt,
-                OpenAiImageOptions.builder()
-                        .withQuality(quality)
-                        .withHeight(height)
-                        .withWidth(width)
-                        .withN(n)
-                        .build()
-        ));
+                        OpenAiImageOptions.builder()
+                                .withQuality(quality)
+                                .withHeight(height)
+                                .withWidth(width)
+                                .withN(n)
+                                .build()
+                ));
     }
 }

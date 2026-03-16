@@ -14,15 +14,14 @@ public class ChatService {
         this.chatModel = chatModel;
     }
 
-    public String getResponse(String prompt){
+    public String getResponse(String prompt) {
         return chatModel.call(prompt);
     }
 
-    public String getResponseOptions(String prompt)
-    {
-        ChatResponse response=  chatModel.call(
+    public String getResponseOptions(String prompt) {
+        ChatResponse response = chatModel.call(
                 new Prompt(
-                       prompt,
+                        prompt,
                         OpenAiChatOptions.builder().withModel("openai/gpt-oss-20b")
                                 .withTemperature(0.4f)
                                 .build()

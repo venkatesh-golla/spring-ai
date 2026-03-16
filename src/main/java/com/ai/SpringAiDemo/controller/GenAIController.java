@@ -16,6 +16,7 @@ import java.util.List;
 public class GenAIController {
     private final ChatService chatService;
     private final ImageService imageService;
+
     @Autowired
     public GenAIController(ChatService chatService, ImageService imageService) {
         this.chatService = chatService;
@@ -23,18 +24,18 @@ public class GenAIController {
     }
 
     @GetMapping("/chat")
-    public String getResponse(@RequestParam String prompt){
+    public String getResponse(@RequestParam String prompt) {
         return chatService.getResponse(prompt);
     }
 
     @GetMapping("/chat-options")
-    public String getResponseWithOptions(@RequestParam String prompt){
+    public String getResponseWithOptions(@RequestParam String prompt) {
         return chatService.getResponseOptions(prompt);
     }
 
     @GetMapping("/image")
     public void generateImage(HttpServletResponse response, @RequestParam String prompt) throws IOException {
-        ImageResponse iamgeResponse= imageService.generateImage(prompt);
+        ImageResponse iamgeResponse = imageService.generateImage(prompt);
         String url = iamgeResponse.getResult().getOutput().getUrl();
         response.sendRedirect(url);
     }
@@ -42,11 +43,11 @@ public class GenAIController {
     @GetMapping("/image-options")
     public List<String> generateImageWithOptions(
             @RequestParam String prompt,
-            @RequestParam (defaultValue = "hd") String quality,
-            @RequestParam (defaultValue = "1024") int height,
-            @RequestParam (defaultValue = "1024") int width,
-            @RequestParam (defaultValue = "1") int n) {
-        ImageResponse imageResponse= imageService.generateImageOptions(prompt,quality,height,width,n);
+            @RequestParam(defaultValue = "hd") String quality,
+            @RequestParam(defaultValue = "1024") int height,
+            @RequestParam(defaultValue = "1024") int width,
+            @RequestParam(defaultValue = "1") int n) {
+        ImageResponse imageResponse = imageService.generateImageOptions(prompt, quality, height, width, n);
         return imageResponse.getResults().stream().map(result -> result.getOutput().getUrl()).toList();
     }
 }
